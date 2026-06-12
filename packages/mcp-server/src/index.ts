@@ -52,7 +52,7 @@ const LIGHT_TOKENS: Record<string, string> = {
   '--bg-root': '#f5f5f7', '--bg-main': '#f5f5f7', '--bg-card': '#ffffff',
   '--bg-card-hover': '#f0f0f2', '--bg-input': '#eaeaee',
   '--border-main': '#d4d4d8', '--border-sub': '#e8e8ec',
-  '--text-primary': '#0d0d12', '--text-secondary': '#6e6e78', '--text-tertiary': '#8e8e98',
+  '--text-primary': '#0d0d12', '--text-secondary': '#555566', '--text-tertiary': '#8e8e98',
   '--accent': '#533afd', '--accent-hover': '#4527e0',
   '--btn-radius': '20px', '--card-radius': '12px',
 };

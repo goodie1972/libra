@@ -73,7 +73,7 @@ export const LIGHT_ENDPOINT = {
   'border-sub': '#e8e8ec',
   'border-input': '#d4d4d8',
   'text-primary': '#0d0d12',
-  'text-secondary': '#6e6e78',
+  'text-secondary': '#555566',
   'text-tertiary': '#8e8e98',
   accent: '#533afd',
   'accent-hover': '#4527e0',

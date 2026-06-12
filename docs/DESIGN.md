@@ -64,7 +64,7 @@ A dark-first design system built for extreme visual precision. Clean, calm, and 
 | Token | Dark (t=0) | Light (t=1) | Mid-blend behavior |
 |-------|-----------|-------------|-------------------|
 | `--text-primary` | `#e8e8ed` | `#0d0d12` | Linear RGB lerp + quintic curve |
-| `--text-secondary` | `#9a9aa0` | `#6e6e78` | Same, target reached faster |
+| `--text-secondary` | `#9a9aa0` | `#555566` | Same, target reached faster |
 | `--text-tertiary` | `#63636a` | `#8e8e98` | Same |
 
 ### Interactive accent
