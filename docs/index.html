@@ -32,6 +32,7 @@
 
   --btn-radius: 8px; --card-radius: 10px;
   --card-shadow: none; --card-border: 1px solid var(--border-main);
+  --code-bg: #08080a;
 
   --lang-zh: block;
   --lang-en: none;
@@ -313,7 +314,7 @@ h3 { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bot
    CODE
    ============================================================ */
 .code-block {
-  background: #08080a; border: 1px solid var(--border-sub);
+  background: var(--code-bg); border: 1px solid var(--border-sub);
   border-radius: 8px; padding: 20px;
   font-family: var(--font-mono); font-size: 12px; line-height: 1.9;
   overflow-x: auto; margin-top: 14px;
@@ -770,7 +771,8 @@ var DARK = {
   'border-main':'#1e1e22','border-sub':'#161618','border-input':'#1e1e22',
   'text-primary':'#e8e8ed','text-secondary':'#9a9aa0','text-tertiary':'#63636a',
   'accent':'#4a6cf7','accent-hover':'#5d7cf9',
-  'grid-line':'#18191c'
+  'grid-line':'#18191c',
+  'code-bg':'#08080a'
 };
 var LIGHT = {
   'bg-root':'#f5f5f7','bg-main':'#f5f5f7','bg-sidebar':'#f5f5f7',
@@ -779,7 +781,8 @@ var LIGHT = {
   'border-main':'#d4d4d8','border-sub':'#e8e8ec','border-input':'#d4d4d8',
   'text-primary':'#0d0d12','text-secondary':'#555566','text-tertiary':'#8e8e98',
   'accent':'#533afd','accent-hover':'#4527e0',
-  'grid-line':'#e8ecf0'
+  'grid-line':'#e8ecf0',
+  'code-bg':'#1a1a1e'
 };
 
 function applyMix(t) {
@@ -802,6 +805,7 @@ function applyMix(t) {
   root.setProperty('--accent',        lerpLinear(DARK['accent'], LIGHT['accent'], tt));
   root.setProperty('--accent-hover',  lerpLinear(DARK['accent-hover'], LIGHT['accent-hover'], tt));
   root.setProperty('--grid-line',     lerpColor(DARK['grid-line'], LIGHT['grid-line'], bt));
+  root.setProperty('--code-bg',       lerpColor(DARK['code-bg'], LIGHT['code-bg'], t));
   root.setProperty('--vol-up',        'rgba(239,83,80,' + (0.5 + t * 0.1).toFixed(2) + ')');
   root.setProperty('--vol-down',      'rgba(38,166,154,' + (0.5 + t * 0.1).toFixed(2) + ')');
   root.setProperty('--btn-radius',    Math.round(8 + t*12) + 'px');
