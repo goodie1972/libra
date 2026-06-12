@@ -9,9 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@libra/react": "^0.1.0",
-    "@libra/tokens": "^0.1.0",
-    "@libra/theme": "^0.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

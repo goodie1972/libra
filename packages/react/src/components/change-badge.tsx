@@ -40,7 +40,7 @@ export function ChangeBadge({
       )}
       style={{ fontVariantNumeric: 'tabular-nums' }}
     >
-      {showSign && value > 0 && '+'}
+      {showSign && value !== 0 && (value > 0 ? '+' : '\u2212')}
       {absValue.toFixed(2)}
       {showPercent && '%'}
     </span>
