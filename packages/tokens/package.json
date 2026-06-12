@@ -1,0 +1,36 @@
+{
+  "name": "@libra/tokens",
+  "version": "0.1.0",
+  "description": "libra 设计 Token — CSS 自定义属性 + TypeScript 类型定义",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./css": "./dist/index.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch && cp src/index.css dist/index.css",
+    "build": "vite build && cp src/index.css dist/index.css",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "libra",
+    "design-tokens",
+    "css-variables",
+    "financial",
+    "dark-theme"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

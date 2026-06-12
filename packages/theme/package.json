@@ -1,0 +1,39 @@
+{
+  "name": "@libra/theme",
+  "version": "0.1.0",
+  "description": "libra 双主题混合引擎 — 暗色 ↔ 亮色无缝过渡，gamma-aware 插值",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "libra",
+    "theme",
+    "dark-mode",
+    "light-mode",
+    "css-variables",
+    "color-interpolation"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@libra/tokens": "^0.1.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
