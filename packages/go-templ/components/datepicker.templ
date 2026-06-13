@@ -1,0 +1,15 @@
+package components
+
+// DatePicker 日期选择输入（原生 input type="date" 的包装）。
+// 视觉风格与 Input / Select 完全一致。
+templ DatePicker(name string, value string, placeholder string, attrs templ.Attributes) {
+	<div class="libra-datepicker-group" { attrs... }>
+		<input
+			type="date"
+			name={ name }
+			value={ value }
+			placeholder={ placeholder }
+			class="libra-datepicker"
+		/>
+	</div>
+}

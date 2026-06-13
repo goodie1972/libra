@@ -192,7 +192,59 @@
   color: var(--error);
 }
 
-/* ---------- 4. Checkbox ---------- */
+/* ---------- 4. DatePicker ---------- */
+.libra-datepicker-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.libra-datepicker {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  /* color-scheme enables native picker popup in dark mode */
+  color-scheme: dark;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  min-height: 34px;
+}
+.libra-datepicker::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  filter: invert(1);
+  transition: opacity 0.15s ease;
+}
+.libra-datepicker::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+.libra-datepicker::-webkit-datetime-edit {
+  color: var(--text-primary);
+}
+.libra-datepicker::-webkit-datetime-edit-fields-wrapper {
+  color: var(--text-primary);
+}
+.libra-datepicker::-webkit-datetime-edit-placeholder {
+  color: var(--text-tertiary);
+}
+.libra-datepicker:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.15);
+}
+.libra-datepicker:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- 5. Checkbox ---------- */
 .libra-checkbox {
   display: inline-flex;
   align-items: center;

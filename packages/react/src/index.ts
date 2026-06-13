@@ -175,3 +175,17 @@ export { DataCard } from './components/datacard';
 export type { DataCardProps, DataField } from './components/datacard';
 export { Screener } from './components/screener';
 export type { ScreenerProps, ScreenField } from './components/screener';
+
+// Phase Final — UI Overlays & Controls
+export { Popover } from './components/popover';
+export type { PopoverProps } from './components/popover';
+export { Drawer } from './components/drawer';
+export type { DrawerProps } from './components/drawer';
+export { Collapsible } from './components/collapsible';
+export type { CollapsibleProps } from './components/collapsible';
+export { Toggle } from './components/toggle';
+export type { ToggleProps } from './components/toggle';
+export { Segmented } from './components/segmented';
+export type { SegmentedProps, SegmentedOption } from './components/segmented';
+export { DatePicker } from './components/datepicker';
+export type { DatePickerProps } from './components/datepicker';
