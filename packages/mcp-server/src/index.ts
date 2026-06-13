@@ -110,6 +110,8 @@ const AVAILABLE_COMPONENTS = [
   'button', 'card', 'table', 'badge', 'input',
   'price-display', 'change-badge', 'stock-card',
   'select', 'tabs', 'tag', 'modal', 'tooltip', 'switch', 'market-table',
+  'textarea', 'checkbox', 'radio', 'slider',
+  'alert', 'toast', 'progress', 'skeleton',
 ];
 
 function generateComponent(name: string): string {

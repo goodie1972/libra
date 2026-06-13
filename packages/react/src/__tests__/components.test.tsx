@@ -1,12 +1,29 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import {
-  Button, Card, CardHeader, CardTitle, CardContent,
-  Badge, Input, ChangeBadge, PriceDisplay, StockCard,
-  Select, Tabs, Tag, Modal, Tooltip, Switch,
-  Table, TableHeader, TableHead, TableRow, TableCell,
-  MarketTable, cn,
-} from '@libra/react';
+import { cn } from '../lib/utils';
+import { Button } from '../components/button';
+import { Card, CardHeader, CardTitle, CardContent } from '../components/card';
+import { Badge } from '../components/badge';
+import { Input } from '../components/input';
+import { ChangeBadge } from '../components/change-badge';
+import { PriceDisplay } from '../components/price-display';
+import { StockCard } from '../components/stock-card';
+import { Select } from '../components/select';
+import { Tabs } from '../components/tabs';
+import { Tag } from '../components/tag';
+import { Modal } from '../components/modal';
+import { Tooltip } from '../components/tooltip';
+import { Switch } from '../components/switch';
+import { Table, TableHeader, TableHead, TableRow, TableCell } from '../components/table';
+import { MarketTable } from '../components/market-table';
+import { Textarea } from '../components/textarea';
+import { Checkbox } from '../components/checkbox';
+import { RadioGroup } from '../components/radio';
+import { Slider } from '../components/slider';
+import { Alert } from '../components/alert';
+import { toastSuccess, toastError, toastLoading, dismiss, Toaster } from '../components/toast';
+import { Progress } from '../components/progress';
+import { Skeleton, SkeletonCard } from '../components/skeleton';
 
 // ============================================================
 // cn utility
@@ -314,5 +331,178 @@ describe('MarketTable', () => {
     const codeHeader = screen.getByText('Code');
     fireEvent.click(codeHeader);
     expect(codeHeader.textContent).toContain('\u25BC');
+  });
+});
+
+// ============================================================
+// Textarea
+// ============================================================
+describe('Textarea', () => {
+  it('renders and handles input', () => {
+    render(<Textarea placeholder="Write..." />);
+    const el = screen.getByPlaceholderText('Write...');
+    expect(el).toBeInTheDocument();
+    fireEvent.change(el, { target: { value: 'hello' } });
+    expect(el).toHaveValue('hello');
+  });
+  it('shows character count', () => {
+    render(<Textarea showCount maxLength={100} defaultValue="hi" />);
+    expect(screen.getByText('2/100')).toBeInTheDocument();
+  });
+  it('applies error style', () => {
+    const { container } = render(<Textarea hasError />);
+    expect(container.firstChild!.firstChild).toHaveClass('border-[var(--error)]');
+  });
+});
+
+// ============================================================
+// Checkbox
+// ============================================================
+describe('Checkbox', () => {
+  const opts = [
+    { value: 'a', label: 'A' },
+    { value: 'b', label: 'B' },
+    { value: 'c', label: 'C' },
+  ];
+  it('renders options', () => {
+    render(<Checkbox options={opts} />);
+    expect(screen.getByText('A')).toBeInTheDocument();
+    expect(screen.getByText('B')).toBeInTheDocument();
+    expect(screen.getByText('C')).toBeInTheDocument();
+  });
+  it('selects and deselects', () => {
+    const fn = vi.fn();
+    render(<Checkbox options={opts} onChange={fn} />);
+    fireEvent.click(screen.getByText('A'));
+    expect(fn).toHaveBeenCalledWith(['a']);
+  });
+  it('toggle select all', () => {
+    const fn = vi.fn();
+    render(<Checkbox options={opts} onChange={fn} />);
+    fireEvent.click(screen.getByText('Select All'));
+    expect(fn).toHaveBeenCalledWith(['a', 'b', 'c']);
+  });
+});
+
+// ============================================================
+// Radio
+// ============================================================
+describe('RadioGroup', () => {
+  const opts = [
+    { value: '1m', label: '1M' },
+    { value: '5m', label: '5M' },
+  ];
+  it('renders options', () => {
+    render(<RadioGroup options={opts} />);
+    expect(screen.getByText('1M')).toBeInTheDocument();
+    expect(screen.getByText('5M')).toBeInTheDocument();
+  });
+  it('selects value', () => {
+    const fn = vi.fn();
+    render(<RadioGroup options={opts} onChange={fn} />);
+    fireEvent.click(screen.getByText('5M'));
+    expect(fn).toHaveBeenCalledWith('5m');
+  });
+  it('renders button variant', () => {
+    render(<RadioGroup options={opts} variant="button" value="1m" onChange={() => {}} />);
+    expect(screen.getByRole('radio', { name: '1M' })).toHaveAttribute('aria-checked', 'true');
+  });
+});
+
+// ============================================================
+// Slider
+// ============================================================
+describe('Slider', () => {
+  it('renders with default value', () => {
+    const { container } = render(<Slider defaultValue={60} />);
+    expect(container.firstChild).toHaveAttribute('aria-valuenow', '60');
+  });
+  it('fires onChange on arrow key', () => {
+    const fn = vi.fn();
+    const { container } = render(<Slider onChange={fn} min={0} max={100} />);
+    fireEvent.keyDown(container.firstChild!, { key: 'ArrowRight' });
+    expect(fn).toHaveBeenCalledWith(51);
+  });
+});
+
+// ============================================================
+// Alert
+// ============================================================
+describe('Alert', () => {
+  it('renders content', () => {
+    render(<Alert>Message</Alert>);
+    expect(screen.getByText('Message')).toBeInTheDocument();
+  });
+  it('renders with title', () => {
+    render(<Alert title="Warning">Body</Alert>);
+    expect(screen.getByText('Warning')).toBeInTheDocument();
+  });
+  it('fires onClose', () => {
+    const fn = vi.fn();
+    render(<Alert onClose={fn}>Dismiss me</Alert>);
+    fireEvent.click(screen.getByLabelText('Close'));
+    expect(fn).toHaveBeenCalledOnce();
+  });
+});
+
+// ============================================================
+// Toast
+// ============================================================
+describe('Toast', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '';
+  });
+  it('toastSuccess renders message', async () => {
+    render(<Toaster />);
+    toastSuccess('Done!');
+    await screen.findByText('Done!');
+  });
+  it('toastError renders message', async () => {
+    render(<Toaster />);
+    toastError('Failed!');
+    await screen.findByText('Failed!');
+  });
+  it('dismiss removes toast', async () => {
+    render(<Toaster />);
+    const id = toastLoading('Loading...');
+    await screen.findByText('Loading...');
+    dismiss(id);
+    await vi.waitFor(() => expect(screen.queryByText('Loading...')).not.toBeInTheDocument());
+  });
+});
+
+// ============================================================
+// Progress
+// ============================================================
+describe('Progress', () => {
+  it('renders line variant', () => {
+    const { container } = render(<Progress value={60} />);
+    expect(container.querySelector('div[class*="rounded-full"]')).toBeInTheDocument();
+  });
+  it('renders circle variant', () => {
+    const { container } = render(<Progress value={75} variant="circle" />);
+    expect(container.querySelector('svg')).toBeInTheDocument();
+  });
+  it('shows label', () => {
+    render(<Progress value={42} showLabel />);
+    expect(screen.getByText('42%')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// Skeleton
+// ============================================================
+describe('Skeleton', () => {
+  it('renders with base classes', () => {
+    const { container } = render(<Skeleton />);
+    expect(container.firstChild).toHaveClass('animate-pulse');
+  });
+  it('renders text skeleton', () => {
+    const { container } = render(<Skeleton text />);
+    expect(container.firstChild).toHaveClass('h-4');
+  });
+  it('renders SkeletonCard', () => {
+    const { container } = render(<SkeletonCard lines={2} />);
+    expect(container.firstChild).toHaveClass('rounded-[var(--card-radius)]');
   });
 });

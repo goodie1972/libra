@@ -42,6 +42,14 @@ const COMPONENTS: Record<string, string> = {
   tooltip: 'tooltip.tsx',
   switch: 'switch.tsx',
   'market-table': 'market-table.tsx',
+  textarea: 'textarea.tsx',
+  checkbox: 'checkbox.tsx',
+  radio: 'radio.tsx',
+  slider: 'slider.tsx',
+  alert: 'alert.tsx',
+  toast: 'toast.tsx',
+  progress: 'progress.tsx',
+  skeleton: 'skeleton.tsx',
 };
 
 /**
