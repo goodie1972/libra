@@ -149,27 +149,17 @@ Statistic  数值展示
 
 ---
 
-## Phase 3 — 金融数据组件（差异化，预计 1 周）
+## Phase 3 — 金融数据组件 ✅ 完成
 
-Libra 的核心竞争力——这些组件是 shadcn 和 Ant Design 不具备的：
-
-```typescript
-KLineChart          K线图（Canvas + SVG 混合渲染）
-DepthChart          买卖盘深度图
-TimeShareChart      分时图（含成交量）
-StockTable          带实时 tick 的行情表
-MarketBoard         盘口五档
-OrderBook           订单簿
-Heatmap             板块热度图
-```
-
-### 技术选型
-
-```
-图表渲染：Canvas（高性能） + SVG（交互）
-底层库：D3.js（数据处理）或 自研轻量
-状态管理：React context（实时数据推送）
-```
+| 组件 | 文件 | 技术 |
+|------|------|------|
+| KLineChart | `kline-chart.tsx` | SVG candlestick + MA5/10/20 + volume bars |
+| DepthChart | `depth-chart.tsx` | SVG area chart, bid/ask cummulative |
+| TimeShareChart | `timeshare-chart.tsx` | SVG line + volume, avg price |
+| StockTable | `stock-table.tsx` | 基于 MarketTable, 涨跌色 + 等宽数字 |
+| MarketBoard | `market-board.tsx` | 盘口五档, 深度条 + spread |
+| OrderBook | `order-book.tsx` | 累积订单簿, 进度条 |
+| Heatmap | `heatmap.tsx` | 涨跌色阶网格, hover scale |
 
 ---
 
