@@ -1,0 +1,62 @@
+package components
+
+// ScreenField 筛选条件字段。
+type ScreenField struct {
+	Label string
+	Value string
+}
+
+// Screener 股票筛选器结果展示组件。
+templ Screener(fields []ScreenField, attrs templ.Attributes) {
+	<style>
+		.libra-screener {
+			background-color: var(--bg-card);
+			border: var(--card-border);
+			border-radius: var(--card-radius);
+			padding: var(--space-4);
+			font-family: var(--font-body);
+			width: 100%;
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+			gap: var(--space-2);
+		}
+		.libra-screener__field {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--space-3);
+			padding: var(--space-2) 0;
+			border-bottom: 1px solid var(--border-sub);
+		}
+		.libra-screener__field:last-child {
+			border-bottom: none;
+		}
+		.libra-screener__label {
+			font-size: var(--text-sm);
+			font-weight: var(--weight-medium);
+			color: var(--text-secondary);
+			flex-shrink: 0;
+		}
+		.libra-screener__value {
+			font-family: var(--font-mono);
+			font-size: var(--text-sm);
+			font-weight: var(--weight-normal);
+			color: var(--text-primary);
+			font-variant-numeric: tabular-nums;
+			text-align: right;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			max-width: 60%;
+		}
+	</style>
+	<div class="libra-screener" { attrs... }>
+		for _, field := range fields {
+			<div class="libra-screener__field">
+				<span class="libra-screener__label">{ field.Label }</span>
+				<span class="libra-screener__value">{ field.Value }</span>
+			</div>
+		}
+	</div>
+}

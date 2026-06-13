@@ -1,0 +1,54 @@
+package components
+
+import "strconv"
+
+// MiniChart 内联 sparkline 迷你走势图（SVG）。
+// trend: "up" 涨 --up 色 / "down" 跌 --down 色 / "" 默认
+templ MiniChart(data []float64, trend string, width int, height int, attrs templ.Attributes) {
+	if width <= 0 {
+		width = 60
+	}
+	if height <= 0 {
+		height = 24
+	}
+	if len(data) >= 2 {
+		<div class="libra-minichart" { attrs... }>
+			<svg width={ strconv.Itoa(width) } height={ strconv.Itoa(height) } viewBox={ "0 0 " + strconv.Itoa(width) + " " + strconv.Itoa(height) } aria-label="迷你走势图">
+				<path d={ miniChartPath(data, width, height, 2) } fill="none" stroke-width="1.5" class={ "libra-minichart__line", templ.KV("libra-minichart__line--up", trend == "up"), templ.KV("libra-minichart__line--down", trend == "down") }/>
+			</svg>
+		</div>
+	}
+}
+
+// miniChartPath 生成 SVG path data。
+func miniChartPath(data []float64, w, h, padding int) string {
+	if len(data) < 2 {
+		return ""
+	}
+	min, max := data[0], data[0]
+	for _, v := range data {
+		if v < min {
+			min = v
+		}
+		if v > max {
+			max = v
+		}
+	}
+	rangeVal := max - min
+	if rangeVal == 0 {
+		rangeVal = 1
+	}
+	drawW := w - 2*padding
+	drawH := h - 2*padding
+	path := ""
+	for i, v := range data {
+		x := padding + i*drawW/(len(data)-1)
+		y := padding + drawH - int((v-min)*float64(drawH)/rangeVal)
+		if i == 0 {
+			path += "M" + strconv.Itoa(x) + "," + strconv.Itoa(y)
+		} else {
+			path += "L" + strconv.Itoa(x) + "," + strconv.Itoa(y)
+		}
+	}
+	return path
+}

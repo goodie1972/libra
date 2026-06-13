@@ -1,0 +1,128 @@
+package components
+
+import "fmt"
+
+// DockPanelItem 面板项定义。
+type DockPanelItem struct {
+	Title string
+	ID    string
+}
+
+// dockTabID 返回 tab radio 的 ID。
+func dockTabID(index int) string {
+	return fmt.Sprintf("dock-tab-%d", index)
+}
+
+// dockPanelID 返回 panel 容器的 ID。
+func dockPanelID(index int) string {
+	return fmt.Sprintf("dock-panel-%d", index)
+}
+
+// DockPanel 面板容器组件。使用纯 CSS + HTML radio 实现 tab 切换，无需 JS。
+templ DockPanel(panels []DockPanelItem, attrs templ.Attributes) {
+	<style>
+		.libra-dock {
+			display: flex;
+			background-color: var(--bg-card);
+			border: var(--card-border);
+			border-radius: var(--card-radius);
+			overflow: hidden;
+			width: 100%;
+			box-sizing: border-box;
+			min-height: 200px;
+		}
+		.libra-dock__tabs {
+			display: flex;
+			flex-direction: column;
+			gap: 0;
+			background-color: var(--bg-input);
+			border-right: 1px solid var(--border-sub);
+			flex-shrink: 0;
+			min-width: 80px;
+		}
+		.libra-dock__input {
+			display: none;
+		}
+		.libra-dock__tab {
+			display: block;
+			padding: var(--space-3) var(--space-3);
+			font-family: var(--font-body);
+			font-size: var(--text-sm);
+			font-weight: var(--weight-medium);
+			color: var(--text-secondary);
+			cursor: pointer;
+			transition: background-color 0.15s, color 0.15s;
+			border: none;
+			background: none;
+			text-align: left;
+			white-space: nowrap;
+			user-select: none;
+		}
+		.libra-dock__tab:hover {
+			background-color: var(--bg-card-hover);
+			color: var(--text-primary);
+		}
+		.libra-dock__content {
+			flex: 1;
+			position: relative;
+			padding: var(--space-4);
+			min-height: 150px;
+		}
+		.libra-dock__panel {
+			display: none;
+			font-family: var(--font-body);
+			font-size: var(--text-base);
+			color: var(--text-primary);
+		}
+		.libra-dock:has(#dock-tab-0:checked) #dock-panel-0,
+		.libra-dock:has(#dock-tab-1:checked) #dock-panel-1,
+		.libra-dock:has(#dock-tab-2:checked) #dock-panel-2,
+		.libra-dock:has(#dock-tab-3:checked) #dock-panel-3,
+		.libra-dock:has(#dock-tab-4:checked) #dock-panel-4,
+		.libra-dock:has(#dock-tab-5:checked) #dock-panel-5,
+		.libra-dock:has(#dock-tab-6:checked) #dock-panel-6,
+		.libra-dock:has(#dock-tab-7:checked) #dock-panel-7,
+		.libra-dock:has(#dock-tab-8:checked) #dock-panel-8,
+		.libra-dock:has(#dock-tab-9:checked) #dock-panel-9 {
+			display: block;
+		}
+		.libra-dock:has(#dock-tab-0:checked) label[for="dock-tab-0"],
+		.libra-dock:has(#dock-tab-1:checked) label[for="dock-tab-1"],
+		.libra-dock:has(#dock-tab-2:checked) label[for="dock-tab-2"],
+		.libra-dock:has(#dock-tab-3:checked) label[for="dock-tab-3"],
+		.libra-dock:has(#dock-tab-4:checked) label[for="dock-tab-4"],
+		.libra-dock:has(#dock-tab-5:checked) label[for="dock-tab-5"],
+		.libra-dock:has(#dock-tab-6:checked) label[for="dock-tab-6"],
+		.libra-dock:has(#dock-tab-7:checked) label[for="dock-tab-7"],
+		.libra-dock:has(#dock-tab-8:checked) label[for="dock-tab-8"],
+		.libra-dock:has(#dock-tab-9:checked) label[for="dock-tab-9"] {
+			background-color: var(--bg-card);
+			color: var(--accent);
+			font-weight: var(--weight-semibold);
+			box-shadow: inset 2px 0 0 var(--accent);
+		}
+	</style>
+	<div class="libra-dock" { attrs... }>
+		<div class="libra-dock__tabs">
+			for i, panel := range panels {
+				<input
+					type="radio"
+					name="dock-group"
+					id={ dockTabID(i) }
+					class="libra-dock__input"
+					if i == 0 {
+						checked
+					}
+				/>
+				<label class="libra-dock__tab" for={ dockTabID(i) }>{ panel.Title }</label>
+			}
+		</div>
+		<div class="libra-dock__content">
+			for i, panel := range panels {
+				<div id={ dockPanelID(i) } class="libra-dock__panel" role="tabpanel">
+					{ panel.Title }
+				</div>
+			}
+		</div>
+	</div>
+}

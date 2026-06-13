@@ -1,0 +1,123 @@
+package components
+
+import "strconv"
+
+// WatchlistItem 自选股项。
+type WatchlistItem struct {
+	Symbol        string
+	Name          string
+	Price         float64
+	Change        float64
+	ChangePercent float64
+}
+
+// watchlistChangeClass 返回涨跌幅对应的 CSS class。
+func watchlistChangeClass(changePercent float64) string {
+	if changePercent > 0 {
+		return "libra-watchlist__change--up"
+	} else if changePercent < 0 {
+		return "libra-watchlist__change--down"
+	}
+	return "libra-watchlist__change--flat"
+}
+
+// Watchlist 自选股列表组件。
+templ Watchlist(items []WatchlistItem, attrs templ.Attributes) {
+	<style>
+		.libra-watchlist {
+			background-color: var(--bg-card);
+			border: var(--card-border);
+			border-radius: var(--card-radius);
+			overflow: hidden;
+			font-family: var(--font-body);
+			width: 100%;
+			box-sizing: border-box;
+		}
+		.libra-watchlist__item {
+			display: flex;
+			align-items: center;
+			padding: var(--space-3) var(--space-4);
+			gap: var(--space-3);
+			cursor: pointer;
+			transition: background-color 0.15s;
+			border-bottom: 1px solid var(--border-sub);
+		}
+		.libra-watchlist__item:last-child {
+			border-bottom: none;
+		}
+		.libra-watchlist__item:hover {
+			background-color: var(--bg-card-hover);
+		}
+		.libra-watchlist__info {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 2px;
+			min-width: 0;
+		}
+		.libra-watchlist__symbol {
+			font-family: var(--font-mono);
+			font-size: var(--text-base);
+			font-weight: var(--weight-semibold);
+			color: var(--text-primary);
+			font-variant-numeric: tabular-nums;
+		}
+		.libra-watchlist__name {
+			font-size: var(--text-xs);
+			color: var(--text-tertiary);
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.libra-watchlist__data {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			gap: 2px;
+			flex-shrink: 0;
+		}
+		.libra-watchlist__price {
+			font-family: var(--font-mono);
+			font-size: var(--text-md);
+			font-weight: var(--weight-semibold);
+			color: var(--text-primary);
+			font-variant-numeric: tabular-nums;
+		}
+		.libra-watchlist__change {
+			font-family: var(--font-mono);
+			font-size: var(--text-sm);
+			font-weight: var(--weight-medium);
+			font-variant-numeric: tabular-nums;
+		}
+		.libra-watchlist__change--up {
+			color: var(--up);
+		}
+		.libra-watchlist__change--down {
+			color: var(--down);
+		}
+		.libra-watchlist__change--flat {
+			color: var(--text-tertiary);
+		}
+	</style>
+	<div class="libra-watchlist" { attrs... }>
+		for _, item := range items {
+			<div class="libra-watchlist__item">
+				<div class="libra-watchlist__info">
+					<span class="libra-watchlist__symbol">{ item.Symbol }</span>
+					<span class="libra-watchlist__name">{ item.Name }</span>
+				</div>
+				<div class="libra-watchlist__data">
+					<span class="libra-watchlist__price">
+						{ strconv.FormatFloat(item.Price, 'f', 2, 64) }
+					</span>
+					<span class={ "libra-watchlist__change", watchlistChangeClass(item.ChangePercent) }>
+						if item.ChangePercent > 0 {
+							+
+						}
+						{ strconv.FormatFloat(item.Change, 'f', 2, 64) } / { strconv.FormatFloat(item.ChangePercent, 'f', 2, 64) }%
+					</span>
+				</div>
+			</div>
+		}
+	</div>
+}

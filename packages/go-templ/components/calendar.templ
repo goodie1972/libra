@@ -1,0 +1,260 @@
+package components
+
+import "strconv"
+import "time"
+
+// CalendarEvent 日历事件。
+type CalendarEvent struct {
+	Day  int
+	Text string
+	Type string // "earnings" | "dividend" | "other"
+}
+
+// dayNames 周日到周六缩写。
+var dayNames = []string{"日", "一", "二", "三", "四", "五", "六"}
+
+// monthDays 返回指定月天数。
+func monthDays(year, month int) int {
+	if month == 2 {
+		if year%400 == 0 || (year%4 == 0 && year%100 != 0) {
+			return 29
+		}
+		return 28
+	}
+	longMonths := []int{1, 3, 5, 7, 8, 10, 12}
+	for _, m := range longMonths {
+		if m == month {
+			return 31
+		}
+	}
+	return 30
+}
+
+// firstWeekday 返回指定月1号是周几（0=周日）。
+func firstWeekday(year, month int) int {
+	y, m := year, month
+	if m <= 2 {
+		y--
+		m += 12
+	}
+	c := y / 100
+	yy := y % 100
+	w := (yy + yy/4 + c/4 - 2*c + 26*(m+1)/10 + 1) % 7
+	if w < 0 {
+		w += 7
+	}
+	return int(w)
+}
+
+// prevMonthDays 返回指定月上个月的天数。
+func prevMonthDays(year, month int) int {
+	if month == 1 {
+		return monthDays(year-1, 12)
+	}
+	return monthDays(year, month-1)
+}
+
+// calendarRemainingCells 计算下月填充单元格数。
+func calendarRemainingCells(offset, days int) int {
+	totalCells := offset + days
+	return (7 - totalCells%7) % 7
+}
+
+// eventTypeTextClass 返回事件类型对应的文本 CSS class。
+func eventTypeTextClass(t string) string {
+	switch t {
+	case "earnings":
+		return "libra-calendar__event-text--earnings"
+	case "dividend":
+		return "libra-calendar__event-text--dividend"
+	default:
+		return "libra-calendar__event-text--other"
+	}
+}
+
+// eventDotClass 返回事件类型对应的圆点 CSS class。
+func eventDotClass(t string) string {
+	switch t {
+	case "earnings":
+		return "libra-calendar__event-dot--earnings"
+	case "dividend":
+		return "libra-calendar__event-dot--dividend"
+	default:
+		return "libra-calendar__event-dot--other"
+	}
+}
+
+// isTodayCheck 判断指定日期是否是今天。
+func isTodayCheck(year, month, day int) bool {
+	now := time.Now()
+	y, m, d := now.Date()
+	return y == year && int(m) == month && d == day
+}
+
+// Calendar 月份日历网格组件。
+templ Calendar(year int, month int, events []CalendarEvent, attrs templ.Attributes) {
+	<style>
+		.libra-calendar {
+			background-color: var(--bg-card);
+			border: var(--card-border);
+			border-radius: var(--card-radius);
+			padding: var(--space-4);
+			font-family: var(--font-body);
+			width: 100%;
+			box-sizing: border-box;
+		}
+		.libra-calendar__header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: var(--space-4);
+		}
+		.libra-calendar__title {
+			font-size: var(--text-lg);
+			font-weight: var(--weight-semibold);
+			color: var(--text-primary);
+		}
+		.libra-calendar__nav {
+			display: flex;
+			gap: var(--space-1);
+		}
+		.libra-calendar__nav button {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 28px;
+			height: 28px;
+			border: 1px solid var(--border-main);
+			border-radius: var(--radius-sm);
+			background: var(--bg-input);
+			color: var(--text-secondary);
+			font-size: var(--text-md);
+			cursor: pointer;
+			transition: background-color 0.15s, color 0.15s;
+			font-family: var(--font-body);
+		}
+		.libra-calendar__nav button:hover {
+			background-color: var(--bg-card-hover);
+			color: var(--text-primary);
+		}
+		.libra-calendar__grid {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: 2px;
+			text-align: center;
+		}
+		.libra-calendar__weekday {
+			font-size: var(--text-xs);
+			font-weight: var(--weight-medium);
+			color: var(--text-tertiary);
+			padding: var(--space-1) 0;
+		}
+		.libra-calendar__day {
+			position: relative;
+			padding: var(--space-2) 0;
+			font-size: var(--text-sm);
+			color: var(--text-secondary);
+			border-radius: var(--radius-sm);
+			transition: background-color 0.15s;
+			min-height: 36px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 2px;
+		}
+		.libra-calendar__day:hover {
+			background-color: var(--bg-card-hover);
+		}
+		.libra-calendar__day--empty {
+			visibility: hidden;
+		}
+		.libra-calendar__day--today {
+			background-color: rgba(74, 108, 247, 0.1);
+			font-weight: var(--weight-semibold);
+			color: var(--accent);
+		}
+		.libra-calendar__day--today:hover {
+			background-color: rgba(74, 108, 247, 0.15);
+		}
+		.libra-calendar__day-number {
+			font-size: var(--text-sm);
+			line-height: 1.2;
+		}
+		.libra-calendar__events {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1px;
+			width: 100%;
+		}
+		.libra-calendar__event-dot {
+			display: inline-block;
+			width: 5px;
+			height: 5px;
+			border-radius: 50%;
+			margin: 0 1px;
+		}
+		.libra-calendar__event-dot--earnings {
+			background-color: var(--up);
+		}
+		.libra-calendar__event-dot--dividend {
+			background-color: var(--down);
+		}
+		.libra-calendar__event-dot--other {
+			background-color: var(--text-tertiary);
+		}
+		.libra-calendar__event-text {
+			font-size: var(--text-xs);
+			line-height: 1.1;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	</style>
+	<div class="libra-calendar" { attrs... }>
+		<div class="libra-calendar__header">
+			<div class="libra-calendar__title">
+				{ strconv.Itoa(year) }年{ strconv.Itoa(month) }月
+			</div>
+			<div class="libra-calendar__nav">
+				<button type="button" aria-label="上一月">&lsaquo;</button>
+				<button type="button" aria-label="下一月">&rsaquo;</button>
+			</div>
+		</div>
+		<div class="libra-calendar__grid">
+			for _, name := range dayNames {
+				<div class="libra-calendar__weekday">{ name }</div>
+			}
+			for i := firstWeekday(year, month) - 1; i >= 0; i-- {
+				<div class="libra-calendar__day libra-calendar__day--empty">
+					<span class="libra-calendar__day-number" style="color:var(--text-tertiary);opacity:0.4">
+						{ strconv.Itoa(prevMonthDays(year, month) - i) }
+					</span>
+				</div>
+			}
+			for d := 1; d <= monthDays(year, month); d++ {
+				<div class={ "libra-calendar__day", templ.KV("libra-calendar__day--today", isTodayCheck(year, month, d)) }>
+					<span class="libra-calendar__day-number">{ strconv.Itoa(d) }</span>
+					for _, ev := range events {
+						if ev.Day == d {
+							if ev.Text != "" {
+								<span class={ "libra-calendar__event-text", eventTypeTextClass(ev.Type) }>{ ev.Text }</span>
+							} else {
+								<span class={ "libra-calendar__event-dot", eventDotClass(ev.Type) }></span>
+							}
+						}
+					}
+				</div>
+			}
+			for i := 1; i <= calendarRemainingCells(firstWeekday(year, month), monthDays(year, month)); i++ {
+				<div class="libra-calendar__day libra-calendar__day--empty">
+					<span class="libra-calendar__day-number" style="color:var(--text-tertiary);opacity:0.4">
+						{ strconv.Itoa(i) }
+					</span>
+				</div>
+			}
+		</div>
+	</div>
+}

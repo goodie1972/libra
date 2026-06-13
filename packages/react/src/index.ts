@@ -157,3 +157,21 @@ export type { StepsProps, StepData } from './components/steps';
 
 export { Timeline } from './components/timeline';
 export type { TimelineProps, TimelineItemData } from './components/timeline';
+
+// Phase 7 — Financial Depth
+export { Calendar } from './components/calendar';
+export type { CalendarProps, CalendarEvent } from './components/calendar';
+export { DockPanel } from './components/dockpanel';
+export type { DockPanelProps, DockPanelItem } from './components/dockpanel';
+export { Command } from './components/command';
+export type { CommandProps, CommandItem } from './components/command';
+export { Watchlist } from './components/watchlist';
+export type { WatchlistProps, WatchlistItem } from './components/watchlist';
+export { MiniChart } from './components/minichart';
+export type { MiniChartProps } from './components/minichart';
+export { NewsFeed } from './components/newsfeed';
+export type { NewsFeedProps, NewsItem } from './components/newsfeed';
+export { DataCard } from './components/datacard';
+export type { DataCardProps, DataField } from './components/datacard';
+export { Screener } from './components/screener';
+export type { ScreenerProps, ScreenField } from './components/screener';

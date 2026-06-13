@@ -1,0 +1,81 @@
+package components
+
+// DataField 数据字段。
+type DataField struct {
+	Label string
+	Value string
+	Trend string // "up" | "down" | ""
+}
+
+// dataCardTrendClass 返回趋势对应的 CSS class。
+func dataCardTrendClass(trend string) string {
+	switch trend {
+	case "up":
+		return "libra-datacard__value--up"
+	case "down":
+		return "libra-datacard__value--down"
+	default:
+		return ""
+	}
+}
+
+// DataCard 数值摘要卡片组件。
+templ DataCard(title string, fields []DataField, attrs templ.Attributes) {
+	<style>
+		.libra-datacard {
+			background-color: var(--bg-card);
+			border: var(--card-border);
+			border-radius: var(--card-radius);
+			padding: var(--space-4);
+			font-family: var(--font-body);
+			width: 100%;
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+			gap: var(--space-3);
+		}
+		.libra-datacard__title {
+			font-size: var(--text-sm);
+			font-weight: var(--weight-semibold);
+			color: var(--text-secondary);
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			padding-bottom: var(--space-2);
+			border-bottom: 1px solid var(--border-sub);
+		}
+		.libra-datacard__row {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--space-3);
+		}
+		.libra-datacard__label {
+			font-size: var(--text-sm);
+			color: var(--text-tertiary);
+			font-weight: var(--weight-normal);
+		}
+		.libra-datacard__value {
+			font-family: var(--font-mono);
+			font-size: var(--text-md);
+			font-weight: var(--weight-semibold);
+			color: var(--text-primary);
+			font-variant-numeric: tabular-nums;
+			text-align: right;
+		}
+		.libra-datacard__value--up {
+			color: var(--up);
+		}
+		.libra-datacard__value--down {
+			color: var(--down);
+		}
+	</style>
+	<div class="libra-datacard" { attrs... }>
+		<div class="libra-datacard__title">{ title }</div>
+		for _, field := range fields {
+			<div class="libra-datacard__row">
+				<span class="libra-datacard__label">{ field.Label }</span>
+				<span class={ "libra-datacard__value", dataCardTrendClass(field.Trend) }>{ field.Value }</span>
+			</div>
+		}
+	</div>
+}
