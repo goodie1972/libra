@@ -60,6 +60,13 @@ const COMPONENTS: Record<string, string> = {
   avatar: 'avatar.tsx',
   empty: 'empty.tsx',
   statistic: 'statistic.tsx',
+  'kline-chart': 'kline-chart.tsx',
+  'depth-chart': 'depth-chart.tsx',
+  'timeshare-chart': 'timeshare-chart.tsx',
+  'stock-table': 'stock-table.tsx',
+  'market-board': 'market-board.tsx',
+  'order-book': 'order-book.tsx',
+  heatmap: 'heatmap.tsx',
 };
 
 /**

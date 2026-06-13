@@ -102,3 +102,25 @@ export type { EmptyProps } from './components/empty';
 
 export { Statistic } from './components/statistic';
 export type { StatisticProps } from './components/statistic';
+
+// Phase 3 — Financial Charts
+export { KLineChart } from './components/kline-chart';
+export type { KLineChartProps, KLineData } from './components/kline-chart';
+
+export { DepthChart } from './components/depth-chart';
+export type { DepthChartProps, DepthLevel } from './components/depth-chart';
+
+export { TimeShareChart } from './components/timeshare-chart';
+export type { TimeShareChartProps, TimeSharePoint } from './components/timeshare-chart';
+
+export { StockTable } from './components/stock-table';
+export type { StockTableProps, StockTableRow } from './components/stock-table';
+
+export { MarketBoard } from './components/market-board';
+export type { MarketBoardProps, BoardLevel } from './components/market-board';
+
+export { OrderBook } from './components/order-book';
+export type { OrderBookProps, OrderLevel } from './components/order-book';
+
+export { Heatmap } from './components/heatmap';
+export type { HeatmapProps, HeatmapCell } from './components/heatmap';

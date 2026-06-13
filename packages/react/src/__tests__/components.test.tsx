@@ -34,6 +34,13 @@ import { Flex } from '../components/flex';
 import { Avatar } from '../components/avatar';
 import { Empty } from '../components/empty';
 import { Statistic } from '../components/statistic';
+import { KLineChart } from '../components/kline-chart';
+import { DepthChart } from '../components/depth-chart';
+import { TimeShareChart } from '../components/timeshare-chart';
+import { StockTable } from '../components/stock-table';
+import { MarketBoard } from '../components/market-board';
+import { OrderBook } from '../components/order-book';
+import { Heatmap } from '../components/heatmap';
 
 // ============================================================
 // cn utility
@@ -699,5 +706,105 @@ describe('Statistic', () => {
   it('renders string value', () => {
     render(<Statistic value="3,382.45" />);
     expect(screen.getByText('3,382.45')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// KLineChart
+// ============================================================
+describe('KLineChart', () => {
+  const mockData = [
+    { time: '09:30', open: 100, high: 102, low: 99, close: 101, volume: 1000 },
+    { time: '09:31', open: 101, high: 103, low: 100, close: 102, volume: 1200 },
+  ];
+  it('renders SVG', () => {
+    const { container } = render(<KLineChart data={mockData} />);
+    expect(container.querySelector('svg')).toBeInTheDocument();
+  });
+  it('shows empty state', () => {
+    render(<KLineChart data={[]} />);
+    expect(screen.getByText('No data')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// DepthChart
+// ============================================================
+describe('DepthChart', () => {
+  it('renders SVG', () => {
+    const { container } = render(<DepthChart bids={[{ price: 100, volume: 10 }]} asks={[{ price: 101, volume: 8 }]} />);
+    expect(container.querySelector('svg')).toBeInTheDocument();
+  });
+  it('shows empty state', () => {
+    render(<DepthChart bids={[]} asks={[]} />);
+    expect(screen.getByText('No data')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// TimeShareChart
+// ============================================================
+describe('TimeShareChart', () => {
+  it('renders SVG', () => {
+    const { container } = render(<TimeShareChart data={[{ time: '09:30', price: 100, volume: 500 }]} />);
+    expect(container.querySelector('svg')).toBeInTheDocument();
+  });
+  it('shows empty state', () => {
+    render(<TimeShareChart data={[]} />);
+    expect(screen.getByText('No data')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// StockTable
+// ============================================================
+describe('StockTable', () => {
+  const data = [
+    { code: 'sh600519', name: 'Moutai', price: 1689.50, change: 35.20, changePercent: 2.13, open: 1650, high: 1700, low: 1645, volume: '17.23B' },
+  ];
+  it('renders rows', () => {
+    render(<StockTable data={data} />);
+    expect(screen.getByText('Moutai')).toBeInTheDocument();
+  });
+  it('shows extra columns', () => {
+    render(<StockTable data={data} showExtra />);
+    expect(screen.getByText('Open')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// MarketBoard
+// ============================================================
+describe('MarketBoard', () => {
+  it('renders bids and asks', () => {
+    render(<MarketBoard bids={[{ price: 100, volume: 1000 }]} asks={[{ price: 101, volume: 500 }]} />);
+    expect(screen.getByText('100.00')).toBeInTheDocument();
+    expect(screen.getByText('101.00')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// OrderBook
+// ============================================================
+describe('OrderBook', () => {
+  it('renders levels', () => {
+    render(<OrderBook bids={[{ price: 100, size: 1.5, total: 1.5 }]} asks={[{ price: 101, size: 2.0, total: 2.0 }]} />);
+    expect(screen.getByText('100.00')).toBeInTheDocument();
+    expect(screen.getByText('101.00')).toBeInTheDocument();
+  });
+});
+
+// ============================================================
+// Heatmap
+// ============================================================
+describe('Heatmap', () => {
+  it('renders cells', () => {
+    render(<Heatmap data={[{ label: 'Banking', value: 2.13 }, { label: 'Tech', value: -1.34, subtitle: '5 stocks' }]} />);
+    expect(screen.getByText('Banking')).toBeInTheDocument();
+    expect(screen.getByText('Tech')).toBeInTheDocument();
+  });
+  it('returns null for empty', () => {
+    const { container } = render(<Heatmap data={[]} />);
+    expect(container.firstChild).toBeNull();
   });
 });

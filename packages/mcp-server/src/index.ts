@@ -115,6 +115,8 @@ const AVAILABLE_COMPONENTS = [
   'breadcrumb', 'pagination', 'dropdown-menu', 'accordion',
   'divider', 'space', 'flex',
   'avatar', 'empty', 'statistic',
+  'kline-chart', 'depth-chart', 'timeshare-chart',
+  'stock-table', 'market-board', 'order-book', 'heatmap',
 ];
 
 function generateComponent(name: string): string {
