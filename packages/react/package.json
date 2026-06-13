@@ -13,12 +13,16 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o ../../docs/storybook"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
@@ -38,8 +42,19 @@
     "vitest": "^2.0.0",
     "@testing-library/react": "^16.0.0",
     "@testing-library/jest-dom": "^6.0.0",
-    "jsdom": "^25.0.0"
+    "jsdom": "^25.0.0",
+    "storybook": "^10.4.4",
+    "@storybook/react-vite": "^10.4.4",
+    "@chromatic-com/storybook": "^5.2.1",
+    "@storybook/addon-a11y": "^10.4.4",
+    "@storybook/addon-docs": "^10.4.4"
   },
-  "keywords": ["libra", "react", "components", "design-system", "financial"],
+  "keywords": [
+    "libra",
+    "react",
+    "components",
+    "design-system",
+    "financial"
+  ],
   "license": "MIT"
 }

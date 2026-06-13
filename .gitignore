@@ -3,3 +3,6 @@ dist/
 .vite/
 *.tsbuildinfo
 .playwright-mcp/
+
+*storybook.log
+storybook-static
